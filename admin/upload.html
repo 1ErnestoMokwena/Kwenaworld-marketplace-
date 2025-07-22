@@ -114,4 +114,33 @@
 </head>
 <body>
 
-  <h1>Admin Upload Product
+  <h1>Admin Upload Product</h1>
+
+  <form id="uploadForm" onsubmit="uploadProduct(event)">
+    <label>
+      Product Name
+      <input type="text" id="productName" required />
+    </label>
+
+    <label>
+      Description
+      <input type="text" id="productDescription" required />
+    </label>
+
+    <label>
+      Price (R)
+      <input type="number" id="productPrice" step="0.01" required />
+    </label>
+
+    <label>
+      Product Image
+      <input type="file" id="imageFile" accept="image/*" required />
+    </label>
+
+    <button type="submit">Upload Product</button>
+  </form>
+
+  <div id="status"></div>
+
+</body>
+</html>
