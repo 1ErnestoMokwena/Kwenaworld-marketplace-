@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Upload Product</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f9f9f9;
+    }
+    form {
+      max-width: 400px;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    input[type=text],
+    input[type=number],
+    input[type=file] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
+      authDomain: "kwenaworld-marketplace.firebaseapp.com",
+      projectId: "kwenaworld-marketplace",
+      storageBucket: "kwenaworld-marketplace.appspot.com",
+      messagingSenderId: "906613354644",
+      appId: "1:906613354644:web:e86e2ab24aec3a10ac4481"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
+
+    window.uploadProduct = async function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('productName').value.trim();
+      const description = document.getElementById('productDescription').value.trim();
+      const price = parseFloat(document.getElementById('productPrice').value);
+      const fileInput = document.getElementById('imageFile');
+      const status = document.getElementById('status');
+
+      if (!name || !description || isNaN(price) || fileInput.files.length === 0) {
+        alert('Please fill all fields and select an image.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const storageRef = ref(storage, `products/${file.name}`);
+
+      try {
+        status.textContent = 'Uploading image...';
+
+        // Upload image
+        await uploadBytes(storageRef, file);
+
+        status.textContent = 'Getting image URL...';
+
+        const downloadURL = await getDownloadURL(storageRef);
+
+        status.textContent = 'Saving product info...';
+
+        // Save product info to Firestore
+        await addDoc(collection(db, 'products'), {
+          name,
+          description,
+          price,
+          image: downloadURL
+        });
+
+        status.textContent = 'Product uploaded successfully!';
+
+        // Reset form
+        document.getElementById('uploadForm').reset();
+      } catch (error) {
+        console.error('Upload failed:', error);
+        status.textContent = 'Upload failed. Check console.';
+      }
+    };
+  </script>
+</head>
+<body>
+
+  <h1>Admin Upload Product
