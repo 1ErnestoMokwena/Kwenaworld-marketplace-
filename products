@@ -1,1 +1,18 @@
-
+[
+  {
+    "name": "Classic Sneakers",
+    "description": "Stylish and comfortable sneakers.",
+    "price": 59.99,
+    "category": "Footwear",
+    "image": "https://example.com/images/sneakers.jpg",
+    "vendorId": "sampleVendor001"
+  },
+  {
+    "name": "Wireless Headphones",
+    "description": "Noise-cancelling over-ear headphones.",
+    "price": 89.99,
+    "category": "Electronics",
+    "image": "https://example.com/images/headphones.jpg",
+    "vendorId": "sampleVendor001"
+  }
+]
