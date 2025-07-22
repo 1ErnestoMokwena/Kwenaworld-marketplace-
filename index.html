@@ -1,16 +1,67 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KWENAWORLD Marketplace</title>
-    <link rel="stylesheet" href="./styles/main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KWENAWORLD Marketplace</title>
+  <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-    <h1>Welcome to KWENAWORLD Marketplace</h1>
-    <p>Multi-vendor e-commerce platform coming soon.</p>
+  <header>
+    <h1>KWENAWORLD Marketplace</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/admin">Admin</a>
+    </nav>
+  </header>
 
-    <script src="./scripts/main.js"></script>
+  <main>
+    <section id="product-list">
+      <h2>Featured Products</h2>
+      <div id="products" class="product-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 KWENAWORLD INDUSTRIES</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
+      authDomain: "kwenaworld-marketplace.firebaseapp.com",
+      projectId: "kwenaworld-marketplace",
+      storageBucket: "kwenaworld-marketplace.appspot.com",
+      messagingSenderId: "906613354644",
+      appId: "1:906613354644:web:e86e2ab24aec3a10ac4481",
+      measurementId: "G-S8JF927Z52"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productsContainer = document.getElementById("products");
+
+    async function displayProducts() {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      querySnapshot.forEach((doc) => {
+        const product = doc.data();
+        const productEl = document.createElement("div");
+        productEl.className = "product";
+        productEl.innerHTML = \`
+          <img src="\${product.image}" alt="\${product.name}" />
+          <h3>\${product.name}</h3>
+          <p>\${product.description}</p>
+          <strong>R\${product.price}</strong>
+        \`;
+        productsContainer.appendChild(productEl);
+      });
+    }
+
+    displayProducts();
+  </script>
 </body>
 </html>
