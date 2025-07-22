@@ -2,95 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>questionmarkt</title>
-  <link rel="stylesheet" href="main.css" />
-  <style>
-    .product-card {
-      border: 1px solid #e2e2e2;
-      border-radius: 12px;
-      padding: 16px;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: 0.3s ease;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    .product-card img {
-      max-width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .product-card h3 {
-      margin: 10px 0 5px;
-    }
-    .product-card p {
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .product-card strong {
-      color: #111;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KWENAWORLD Marketplace</title>
+    <link rel="stylesheet" href="./styles/main.css">
 </head>
 <body>
+    <h1>Welcome to KWENAWORLD Marketplace</h1>
+    <p>Multi-vendor e-commerce platform coming soon.</p>
 
-  <header>
-    <h1 style="text-align: center; padding: 1rem;">Welcome to KWENAWORLD Marketplace</h1>
-  </header>
-
-  <main>
-    <section id="product-list" class="grid gap-4 p-4 md:grid-cols-3">
-      <!-- Products will be inserted here -->
-    </section>
-  </main>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
-      authDomain: "kwenaworld-marketplace.firebaseapp.com",
-      projectId: "kwenaworld-marketplace",
-      storageBucket: "kwenaworld-marketplace.appspot.com",
-      messagingSenderId: "906613354644",
-      appId: "1:906613354644:web:e86e2ab24aec3a10ac4481",
-      measurementId: "G-S8JF927Z52"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function fetchProducts() {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      const productContainer = document.getElementById("product-list");
-
-      if (querySnapshot.empty) {
-        productContainer.innerHTML = "<p>No products available yet.</p>";
-        return;
-      }
-
-      querySnapshot.forEach((doc) => {
-        const product = doc.data();
-
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.innerHTML = `
-          <img src="${product.image}" alt="${product.name}" />
-          <h3>${product.name}</h3>
-          <p>${product.description}</p>
-          <strong>Price: R${product.price}</strong>
-        `;
-        productContainer.appendChild(card);
-      });
-    }
-
-    fetchProducts();
-  </script>
-
+    <script src="./scripts/main.js"></script>
 </body>
 </html>
