@@ -3,74 +3,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Upload Products</title>
-  <link rel="stylesheet" href="/main.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Product</title>
 </head>
-<body class="p-4 font-sans">
-  <h1 class="text-2xl font-bold mb-4">Admin: Upload Products</h1>
-
-  <form id="uploadForm" class="space-y-4">
-    <input type="text" id="name" placeholder="Product Name" required class="w-full p-2 border rounded" />
-    <textarea id="description" placeholder="Description" required class="w-full p-2 border rounded"></textarea>
-    <input type="number" id="price" placeholder="Price" required class="w-full p-2 border rounded" />
-    <input type="file" id="imageFile" accept="image/*" required class="w-full" />
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Upload Product</button>
+<body>
+  <h1>Admin Upload Products</h1>
+  <form id="upload-form">
+    <input type="text" id="name" placeholder="Product Name" required /><br>
+    <input type="number" id="price" placeholder="Price" required /><br>
+    <input type="file" id="image" accept="image/*" required /><br>
+    <button type="submit">Upload Product</button>
   </form>
+  <p id="status"></p>
 
-  <p id="status" class="mt-4 text-sm"></p>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
-      authDomain: "kwenaworld-marketplace.firebaseapp.com",
-      projectId: "kwenaworld-marketplace",
-      storageBucket: "kwenaworld-marketplace.appspot.com",
-      messagingSenderId: "906613354644",
-      appId: "1:906613354644:web:e86e2ab24aec3a10ac4481",
-      measurementId: "G-S8JF927Z52"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const storage = getStorage(app);
-    const db = getFirestore(app);
-
-    const form = document.getElementById("uploadForm");
-    const status = document.getElementById("status");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      status.textContent = "Uploading...";
-
-      const name = document.getElementById("name").value;
-      const description = document.getElementById("description").value;
-      const price = parseFloat(document.getElementById("price").value);
-      const file = document.getElementById("imageFile").files[0];
-
-      try {
-        const imageRef = ref(storage, `products/${file.name}`);
-        await uploadBytes(imageRef, file);
-        const imageUrl = await getDownloadURL(imageRef);
-
-        await addDoc(collection(db, "products"), {
-          name,
-          description,
-          price,
-          imageUrl,
-          timestamp: Date.now()
-        });
-
-        status.textContent = "✅ Product uploaded successfully!";
-        form.reset();
-      } catch (err) {
-        console.error(err);
-        status.textContent = "❌ Error uploading product.";
-      }
-    });
-  </script>
+  <script type="module" src="upload.js"></script>
 </body>
 </html>

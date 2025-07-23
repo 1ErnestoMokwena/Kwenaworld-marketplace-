@@ -3,54 +3,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KWENAWORLD Marketplace</title>
-  <link rel="stylesheet" href="/main.css" />
 </head>
-<body class="font-sans">
-  <header class="bg-black text-white p-4">
-    <h1 class="text-xl font-bold">KWENAWORLD Marketplace</h1>
-  </header>
+<body>
+  <h1>Product List</h1>
+  <div id="product-list"></div>
 
-  <main class="p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="productsGrid">
-  </main>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
-      authDomain: "kwenaworld-marketplace.firebaseapp.com",
-      projectId: "kwenaworld-marketplace",
-      storageBucket: "kwenaworld-marketplace.appspot.com",
-      messagingSenderId: "906613354644",
-      appId: "1:906613354644:web:e86e2ab24aec3a10ac4481",
-      measurementId: "G-S8JF927Z52"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const grid = document.getElementById("productsGrid");
-
-    async function loadProducts() {
-      const snapshot = await getDocs(collection(db, "products"));
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const product = document.createElement("div");
-        product.className = "border rounded shadow p-4 bg-white";
-        product.innerHTML = `
-          <img src="${data.imageUrl}" alt="${data.name}" class="w-full h-40 object-cover mb-2 rounded" />
-          <h2 class="font-semibold text-lg">${data.name}</h2>
-          <p class="text-sm text-gray-700">${data.description}</p>
-          <p class="mt-2 font-bold text-blue-600">R ${data.price}</p>
-        `;
-        grid.appendChild(product);
-      });
-    }
-
-    loadProducts();
-  </script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>
