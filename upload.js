@@ -1,8 +1,6 @@
+// upload.js
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+// Your Firebase config (replace if needed)
 const firebaseConfig = {
   apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
   authDomain: "kwenaworld-marketplace.firebaseapp.com",
@@ -13,36 +11,48 @@ const firebaseConfig = {
   measurementId: "G-PHQ57NC75Q"
 };
 
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
-const db = getFirestore(app);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+// Handle form submission
+document.getElementById("productForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const name = document.getElementById("productName").value;
-  const price = document.getElementById("productPrice").value;
-  const imageFile = document.getElementById("productImage").files[0];
-  const status = document.getElementById("status");
 
-  if (!imageFile) return status.innerText = "Please select an image";
+  const name = document.getElementById("name").value;
+  const price = parseFloat(document.getElementById("price").value);
+  const description = document.getElementById("description").value;
+  const category = document.getElementById("category").value;
+  const file = document.getElementById("image").files[0];
+
+  if (!file) {
+    alert("Please select an image");
+    return;
+  }
+
+  const fileName = `${Date.now()}_${file.name}`;
+  const storageRef = storage.ref().child(`product-images/${fileName}`);
 
   try {
-    status.innerText = "Uploading image...";
-    const imageRef = ref(storage, "products/" + imageFile.name);
-    await uploadBytes(imageRef, imageFile);
-    const imageUrl = await getDownloadURL(imageRef);
+    // Upload image to Firebase Storage
+    const snapshot = await storageRef.put(file);
+    const imageUrl = await snapshot.ref.getDownloadURL();
 
-    status.innerText = "Saving product data...";
-    await addDoc(collection(db, "products"), {
+    // Save product info to Firestore
+    await db.collection("products").add({
       name,
-      price: parseFloat(price),
-      imageUrl,
-      createdAt: new Date()
+      price,
+      description,
+      category,
+      image: imageUrl,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    status.innerText = "Product uploaded successfully!";
-  } catch (err) {
-    console.error(err);
-    status.innerText = "Error uploading product.";
+    alert("✅ Product uploaded successfully!");
+    document.getElementById("productForm").reset();
+  } catch (error) {
+    console.error("Error uploading product:", error);
+    alert("❌ Failed to upload product. See console for details.");
   }
 });
