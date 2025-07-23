@@ -1,79 +1,21 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Upload Product</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <h2>Upload Product</h2>
-
-  <form id="productForm">
-    <input type="text" id="name" placeholder="Product Name" required><br><br>
-    <input type="text" id="price" placeholder="Price" required><br><br>
-    <input type="text" id="description" placeholder="Description"><br><br>
-    <input type="file" id="image" accept="image/*" required><br><br>
+  <h1>Admin Upload Products</h1>
+  <form id="upload-form">
+    <input type="text" id="name" placeholder="Product Name" required /><br>
+    <input type="number" id="price" placeholder="Price" required /><br>
+    <input type="file" id="image" accept="image/*" required /><br>
     <button type="submit">Upload Product</button>
   </form>
-
   <p id="status"></p>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBnN7kl9SI00cWNvu5tGHxOJJcODcyc4a4",
-      authDomain: "kwenaworld-marketplace.firebaseapp.com",
-      projectId: "kwenaworld-marketplace",
-      storageBucket: "kwenaworld-marketplace.appspot.com",
-      messagingSenderId: "906613354644",
-      appId: "1:906613354644:web:e86e2ab24aec3a10ac4481",
-      measurementId: "G-S8JF927Z52"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const form = document.getElementById('productForm');
-    const status = document.getElementById('status');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value;
-      const price = document.getElementById('price').value;
-      const description = document.getElementById('description').value;
-      const imageFile = document.getElementById('image').files[0];
-
-      if (!imageFile) {
-        status.textContent = "Please select an image.";
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = async function () {
-        const base64Image = reader.result;
-
-        try {
-          await addDoc(collection(db, "products"), {
-            name,
-            price,
-            description,
-            image: base64Image,
-            createdAt: new Date()
-          });
-
-          status.textContent = "✅ Product uploaded successfully!";
-          form.reset();
-        } catch (error) {
-          console.error(error);
-          status.textContent = "❌ Error uploading product.";
-        }
-      };
-
-      reader.readAsDataURL(imageFile);
-    });
-  </script>
+  <script type="module" src="upload.js"></script>
 </body>
 </html>
