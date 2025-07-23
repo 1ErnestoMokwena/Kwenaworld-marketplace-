@@ -1,30 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KWENAWORLD Marketplace</title>
-  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="/main.css" />
 </head>
-<body>
-  <header>
-    <h1>KWENAWORLD Marketplace</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/admin">Admin</a>
-    </nav>
+<body class="font-sans">
+  <header class="bg-black text-white p-4">
+    <h1 class="text-xl font-bold">KWENAWORLD Marketplace</h1>
   </header>
 
-  <main>
-    <section id="product-list">
-      <h2>Featured Products</h2>
-      <div id="products" class="product-grid"></div>
-    </section>
+  <main class="p-4 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="productsGrid">
   </main>
-
-  <footer>
-    <p>&copy; 2025 KWENAWORLD INDUSTRIES</p>
-  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -43,25 +32,25 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const productsContainer = document.getElementById("products");
+    const grid = document.getElementById("productsGrid");
 
-    async function displayProducts() {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      querySnapshot.forEach((doc) => {
-        const product = doc.data();
-        const productEl = document.createElement("div");
-        productEl.className = "product";
-        productEl.innerHTML = \`
-          <img src="\${product.image}" alt="\${product.name}" />
-          <h3>\${product.name}</h3>
-          <p>\${product.description}</p>
-          <strong>R\${product.price}</strong>
-        \`;
-        productsContainer.appendChild(productEl);
+    async function loadProducts() {
+      const snapshot = await getDocs(collection(db, "products"));
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const product = document.createElement("div");
+        product.className = "border rounded shadow p-4 bg-white";
+        product.innerHTML = `
+          <img src="${data.imageUrl}" alt="${data.name}" class="w-full h-40 object-cover mb-2 rounded" />
+          <h2 class="font-semibold text-lg">${data.name}</h2>
+          <p class="text-sm text-gray-700">${data.description}</p>
+          <p class="mt-2 font-bold text-blue-600">R ${data.price}</p>
+        `;
+        grid.appendChild(product);
       });
     }
 
-    displayProducts();
+    loadProducts();
   </script>
 </body>
 </html>
