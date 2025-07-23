@@ -3,19 +3,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Upload Product</title>
 </head>
 <body>
-  <h1>Admin Upload Products</h1>
-  <form id="upload-form">
-    <input type="text" id="name" placeholder="Product Name" required /><br>
-    <input type="number" id="price" placeholder="Price" required /><br>
-    <input type="file" id="image" accept="image/*" required /><br>
-    <button type="submit">Upload Product</button>
+  <h2>Upload Product</h2>
+  <form id="uploadForm">
+    <input type="text" id="productName" placeholder="Product Name" required /><br />
+    <input type="number" id="productPrice" placeholder="Price" required /><br />
+    <input type="file" id="productImage" required /><br />
+    <button type="submit">Upload</button>
   </form>
   <p id="status"></p>
-
-  <script type="module" src="upload.js"></script>
+  <script type="module" src="./upload.js"></script>
 </body>
 </html>
