@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vendor Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="dashboard.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Dashboard - KWENAWORLD</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <div class="dashboard-container">
-    <h1>Vendor Dashboard</h1>
-    <div class="dashboard-grid">
-      <div class="card" id="products-count">Products: Loading...</div>
-      <div class="card" id="orders-count">Orders: Loading...</div>
-      <div class="card" id="subscription-status">Subscription: Loading...</div>
-    </div>
+    <aside class="sidebar">
+      <h2>Vendor Panel</h2>
+      <ul>
+        <li><a href="#">Overview</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Orders</a></li>
+        <li><a href="#">Subscription</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+    </aside>
+    <main class="main-content">
+      <h1>Welcome to your Dashboard</h1>
+      <div id="overview">
+        <p>Total Products: <span id="productCount">...</span></p>
+        <p>Pending Orders: <span id="orderCount">...</span></p>
+      </div>
+    </main>
   </div>
+  <script src="dashboard.js"></script>
 </body>
 </html>
