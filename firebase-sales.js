@@ -1,0 +1,1 @@
+// Sales counter Firebase logic
