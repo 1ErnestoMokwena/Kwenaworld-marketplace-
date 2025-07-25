@@ -15,10 +15,30 @@
   <h1>Welcome to KWENAWORLD Marketplace</h1>
   <p id="status">Loading products...</p>
   <div class="product-list" id="product-list"></div>
+  <!-- Wishlist Button -->
+<button onclick="addToWishlist(productId)">🤍 Wishlist</button>
+
+<!-- Sales Counter -->
+<div id="sales-counter">Sales: <span id="sales-count">0</span></div>
+
+<!-- Comment Section -->
+<div id="comment-section">
+  <h3>Comments</h3>
+  <div id="comment-list"></div>
+  <textarea id="comment-input" placeholder="Write a comment..."></textarea>
+  <button onclick="submitComment(productId)">Submit</button>
+</div>
+
+<!-- Follow Vendor Button -->
+<button onclick="followVendor(vendorId)">+ Follow Vendor</button>
 
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
   <script src="js/load-products.js"></script>
+  <script src="js/wishlist.js"></script>
+<script src="js/sales-counter.js"></script>
+<script src="js/comments.js"></script>
+<script src="js/follow-vendor.js"></script>
 </body>
 </html>
